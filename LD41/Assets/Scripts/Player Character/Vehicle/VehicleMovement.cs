@@ -99,7 +99,8 @@ public class VehicleMovement : MonoBehaviour
         carMoves = Mathf.Abs(rb.velocity.magnitude) >= 0.05f;
         if (Mathf.Abs(horizontalAxis) > 0.05 && carMoves)
         {
-            float rotateSpeed = horizontalAxis > 0 ? rotationSpeed : -rotationSpeed;
+            float brakeEnhancement = brakeTime > 0 ? 5f : 0f;
+            float rotateSpeed = horizontalAxis > 0 ? (rotationSpeed + brakeEnhancement) : - (rotationSpeed + brakeEnhancement);
             // Rotate around the world y-axis
             rb.AddTorque(transform.up * rotateSpeed, ForceMode.Force);
             //transform.Rotate(Vector3.up * rotateSpeed);

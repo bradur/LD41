@@ -20,6 +20,12 @@ public class CameraManager : MonoBehaviour {
     [SerializeField]
     private Cinemachine.CinemachineVirtualCamera carSeatCamera;
 
+    [SerializeField]
+    private SimpleSmoothMouseLook mouseLook;
+
+    [SerializeField]
+    private GameObject miniMap;
+
     private int mainPriority = 10;
     private int secondaryPriority = 5;
 
@@ -27,11 +33,14 @@ public class CameraManager : MonoBehaviour {
     {
         carSeatCamera.Priority = mainPriority;
         topDownCamera.Priority = secondaryPriority;
+        miniMap.SetActive(true);
+        mouseLook.enabled = true;
     }
 
     public void SwitchToTopDown()
     {
         topDownCamera.Priority = mainPriority;
         carSeatCamera.Priority = secondaryPriority;
+        mouseLook.enabled = false;
     }
 }

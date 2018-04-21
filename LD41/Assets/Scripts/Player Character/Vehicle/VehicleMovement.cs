@@ -44,6 +44,8 @@ public class VehicleMovement : MonoBehaviour
     private float brakeTime = 0f;
     private bool braking = false;
 
+    private bool drivingMode = true;
+
     private void Start()
     {
         velocityMagnitudeMax = maxVelocityMagnitude;
@@ -75,8 +77,22 @@ public class VehicleMovement : MonoBehaviour
         );
     }
 
+    public void DisableDriving()
+    {
+        drivingMode = false;
+    }
+
+    public void EnableDriving()
+    {
+        drivingMode = true;
+    }
+
     private void FixedUpdate()
     {
+        if (!drivingMode)
+        {
+            return;
+        }
         bool onRoad = IsOnRoad();
 
         float horizontalAxis = Input.GetAxis("Horizontal");

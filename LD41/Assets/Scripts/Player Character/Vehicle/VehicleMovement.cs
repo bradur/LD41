@@ -4,6 +4,7 @@
 
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class VehicleMovement : MonoBehaviour
 {
@@ -29,10 +30,19 @@ public class VehicleMovement : MonoBehaviour
     private float backwardMoveSpeed = 1f;
 
     [SerializeField]
+    [Range(0.2f, 500f)]
+    private float forwardMoveSpeedOffroad = 1f;
+
+    [SerializeField]
+    [Range(0.2f, 500f)]
+    private float backwardMoveSpeedOffroad = 1f;
+
+    [SerializeField]
     [Range(0.05f, 1f)]
     private float brakeSpeed = 1f;
 
     private float brakeTime = 0f;
+    private bool braking = false;
 
     private void Start()
     {
@@ -40,9 +50,35 @@ public class VehicleMovement : MonoBehaviour
         rb = GetComponent<Rigidbody>();
     }
 
+    [SerializeField]
+    private List<Transform> wheelPositions;
+
+    [SerializeField]
+    private DirtTrailManager dirtTrailManager;
+
+    [SerializeField]
+    private CapsuleCollider capsuleCollider;
+    [SerializeField]
+    private LayerMask roadMask;
+
+    private bool IsOnRoad()
+    {
+        return Physics.CheckCapsule(
+            capsuleCollider.bounds.center,
+            new Vector3(
+                capsuleCollider.bounds.center.x,
+                capsuleCollider.bounds.min.y + 0.35f,
+                capsuleCollider.bounds.center.z
+            ),
+            0.4f,
+            roadMask
+        );
+    }
 
     private void FixedUpdate()
     {
+        bool onRoad = IsOnRoad();
+
         float horizontalAxis = Input.GetAxis("Horizontal");
 
         bool carMoves = Mathf.Abs(rb.velocity.magnitude) >= 0.05f;
@@ -53,6 +89,10 @@ public class VehicleMovement : MonoBehaviour
             if (verticalAxis > 0f)
             {
                 moveSpeed = forwardMoveSpeed - brakeTime;
+                if (!onRoad)
+                {
+                    moveSpeed = forwardMoveSpeedOffroad - brakeTime;
+                }
                 if (moveSpeed < 0)
                 {
                     moveSpeed = 0;
@@ -61,6 +101,10 @@ public class VehicleMovement : MonoBehaviour
             else
             {
                 moveSpeed = -(backwardMoveSpeed - brakeTime);
+                if (!onRoad)
+                {
+                    moveSpeed = backwardMoveSpeed - brakeTime;
+                }
                 if (moveSpeed > 0)
                 {
                     moveSpeed = 0f;
@@ -72,6 +116,14 @@ public class VehicleMovement : MonoBehaviour
 
         if (KeyManager.main.GetKey(GameAction.Brake))
         {
+            if (!braking)
+            {
+                foreach (Transform wheel in wheelPositions)
+                {
+                    dirtTrailManager.SpawnTrail(wheel);
+                }
+            }
+            braking = true;
             brakeTime += Time.fixedDeltaTime;
             Vector3 velocity;
             if (rb.velocity.magnitude > 0f)
@@ -93,20 +145,20 @@ public class VehicleMovement : MonoBehaviour
         }
         else
         {
+            braking = false;
             brakeTime = 0f;
+            dirtTrailManager.StopAllTrails();
         }
 
         carMoves = Mathf.Abs(rb.velocity.magnitude) >= 0.05f;
         if (Mathf.Abs(horizontalAxis) > 0.05 && carMoves)
         {
             float brakeEnhancement = brakeTime > 0 ? 5f : 0f;
-            float rotateSpeed = horizontalAxis > 0 ? (rotationSpeed + brakeEnhancement) : - (rotationSpeed + brakeEnhancement);
+            float rotateSpeed = horizontalAxis > 0 ? (rotationSpeed + brakeEnhancement) : -(rotationSpeed + brakeEnhancement);
             // Rotate around the world y-axis
             rb.AddTorque(transform.up * rotateSpeed, ForceMode.Force);
             //transform.Rotate(Vector3.up * rotateSpeed);
         }
-
-
 
     }
 

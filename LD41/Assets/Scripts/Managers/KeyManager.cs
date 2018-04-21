@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public enum Action
+public enum GameAction
 {
     None
 }
@@ -10,7 +10,7 @@ public enum Action
 public class GameKey : System.Object
 {
     public KeyCode key;
-    public Action action;
+    public GameAction action;
 }
 
 public class KeyManager : MonoBehaviour
@@ -35,7 +35,7 @@ public class KeyManager : MonoBehaviour
     [SerializeField]
     private HotKeyMap hotkeyMap;
 
-    public bool GetKeyDown(Action action)
+    public bool GetKeyDown(GameAction action)
     {
         foreach (KeyCode kc in GetKeyCode(action))
         {
@@ -47,7 +47,7 @@ public class KeyManager : MonoBehaviour
         return false;
     }
 
-    public bool GetKeyUp(Action action)
+    public bool GetKeyUp(GameAction action)
     {
         foreach (KeyCode kc in GetKeyCode(action))
         {
@@ -60,7 +60,7 @@ public class KeyManager : MonoBehaviour
         return false;
     }
 
-    public bool GetKey(Action action)
+    public bool GetKey(GameAction action)
     {
         foreach (KeyCode kc in GetKeyCode(action))
         {
@@ -72,7 +72,7 @@ public class KeyManager : MonoBehaviour
         return false;
     }
 
-    public List<KeyCode> GetKeyCode(Action action)
+    public List<KeyCode> GetKeyCode(GameAction action)
     {
         List<KeyCode> keys = new List<KeyCode>();
         foreach (GameKey gameKey in hotkeyMap.Keys)
@@ -85,7 +85,7 @@ public class KeyManager : MonoBehaviour
         return keys;
     }
 
-    public string GetKeyString(Action action)
+    public string GetKeyString(GameAction action)
     {
         foreach (GameKey gameKey in hotkeyMap.Keys)
         {

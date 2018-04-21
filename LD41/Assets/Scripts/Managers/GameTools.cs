@@ -2,7 +2,7 @@
 
 using UnityEngine;
 
-public class Tools : MonoBehaviour
+public class GameTools : MonoBehaviour
 {
     public static int IntParseFast(string value)
     {

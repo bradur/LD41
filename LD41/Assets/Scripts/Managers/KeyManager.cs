@@ -3,7 +3,8 @@ using System.Collections.Generic;
 
 public enum GameAction
 {
-    None
+    None,
+    Brake
 }
 
 [System.Serializable]

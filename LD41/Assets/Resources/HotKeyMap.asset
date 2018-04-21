@@ -13,7 +13,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectName: HotKeyMap
   keys:
-  - key: 0
-    action: 0
-  - key: 0
-    action: 0
+  - key: 32
+    action: 1

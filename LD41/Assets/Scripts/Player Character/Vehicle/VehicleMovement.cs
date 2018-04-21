@@ -28,6 +28,11 @@ public class VehicleMovement : MonoBehaviour
     [Range(0.2f, 500f)]
     private float backwardMoveSpeed = 1f;
 
+    [SerializeField]
+    [Range(0.05f, 1f)]
+    private float brakeSpeed = 1f;
+
+    private float brakeTime = 0f;
 
     private void Start()
     {
@@ -35,11 +40,64 @@ public class VehicleMovement : MonoBehaviour
         rb = GetComponent<Rigidbody>();
     }
 
-    
+
     private void FixedUpdate()
     {
         float horizontalAxis = Input.GetAxis("Horizontal");
-        if (Mathf.Abs(horizontalAxis) > 0.05)
+
+        bool carMoves = Mathf.Abs(rb.velocity.magnitude) >= 0.05f;
+        float verticalAxis = Input.GetAxis("Vertical");
+        if (Mathf.Abs(verticalAxis) > 0.05f && rb.velocity.magnitude < velocityMagnitudeMax)
+        {
+            float moveSpeed;
+            if (verticalAxis > 0f)
+            {
+                moveSpeed = forwardMoveSpeed - brakeTime;
+                if (moveSpeed < 0)
+                {
+                    moveSpeed = 0;
+                }
+            }
+            else
+            {
+                moveSpeed = -(backwardMoveSpeed - brakeTime);
+                if (moveSpeed > 0)
+                {
+                    moveSpeed = 0f;
+                }
+            }
+
+            rb.AddForce(transform.forward * moveSpeed, ForceMode.Acceleration);
+        }
+
+        if (KeyManager.main.GetKey(GameAction.Brake))
+        {
+            brakeTime += Time.fixedDeltaTime;
+            Vector3 velocity;
+            if (rb.velocity.magnitude > 0f)
+            {
+                velocity = rb.velocity - transform.forward * brakeSpeed;
+                if (velocity.magnitude < 0f)
+                {
+                    velocity = Vector3.zero;
+                }
+            }
+            else if (rb.velocity.magnitude > 0f)
+            {
+                velocity = rb.velocity + transform.forward * brakeSpeed;
+                if (velocity.magnitude > 0f)
+                {
+                    velocity = Vector3.zero;
+                }
+            }
+        }
+        else
+        {
+            brakeTime = 0f;
+        }
+
+        carMoves = Mathf.Abs(rb.velocity.magnitude) >= 0.05f;
+        if (Mathf.Abs(horizontalAxis) > 0.05 && carMoves)
         {
             float rotateSpeed = horizontalAxis > 0 ? rotationSpeed : -rotationSpeed;
             // Rotate around the world y-axis
@@ -48,12 +106,6 @@ public class VehicleMovement : MonoBehaviour
         }
 
 
-        float verticalAxis = Input.GetAxis("Vertical");
-        if (Mathf.Abs(verticalAxis) > 0.5 && rb.velocity.magnitude < velocityMagnitudeMax)
-        {
-            float moveSpeed = verticalAxis > 0 ? forwardMoveSpeed : -backwardMoveSpeed;
-            rb.AddForce(transform.forward * moveSpeed, ForceMode.Acceleration);
-        }
 
     }
 

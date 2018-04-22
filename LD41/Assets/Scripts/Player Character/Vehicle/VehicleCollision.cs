@@ -22,6 +22,7 @@ public class VehicleCollision : MonoBehaviour {
     {
         if (collider.gameObject.tag == "GroundSituation")
         {
+            transform.rotation = collider.transform.rotation;
             CameraManager.main.SwitchToCarSeatView();
             collider.gameObject.GetComponent<GroundSituation>().StartSituation(carSeatCamera);
         }

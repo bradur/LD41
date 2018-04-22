@@ -25,6 +25,8 @@ public class GroundSituation : MonoBehaviour
 
     private bool situationStarting = false;
 
+    private bool spent = false;
+
     private Transform playerCamera;
 
     [SerializeField]
@@ -37,9 +39,13 @@ public class GroundSituation : MonoBehaviour
 
     public void StartSituation(Transform playerCamera)
     {
-        situationStarting = true;
-        this.playerCamera = playerCamera;
-        mesh.enabled = false;
+        if (!spent)
+        {
+            spent = true;
+            situationStarting = true;
+            this.playerCamera = playerCamera;
+            mesh.enabled = false;
+        }
     }
 
     public void EnemyDie(Enemy enemy)

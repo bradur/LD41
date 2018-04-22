@@ -55,6 +55,7 @@ public class Enemy : MonoBehaviour
 
     public void Shoot()
     {
+        Debug.Log(gameObject.name + " is shooting!");
         SoundManager.main.PlaySound(SoundType.EnemyShoot);
         GameManager.main.GetShot();
     }

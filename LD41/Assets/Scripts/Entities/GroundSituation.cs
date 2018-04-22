@@ -36,6 +36,9 @@ public class GroundSituation : MonoBehaviour
     private bool isEnd = false;
     public bool LevelEnd { get { return isEnd; } }
 
+    [SerializeField]
+    private bool isBank = false;
+
     void Start()
     {
 
@@ -70,7 +73,7 @@ public class GroundSituation : MonoBehaviour
 
     public void EndSituation()
     {
-        GameManager.main.SwitchToTopDown();
+        GameManager.main.SwitchToTopDown(isBank);
     }
 
     void Update()

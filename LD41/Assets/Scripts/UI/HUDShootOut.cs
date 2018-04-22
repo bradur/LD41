@@ -22,10 +22,16 @@ public class HUDShootOut : MonoBehaviour {
         cachedColor = imgComponent.color;
     }
 
-    public void GetShot()
+    public void SetHealth(int health)
+    {
+        txtPlayerHealth.text = health.ToString();
+    }
+
+    public void GetShot(int health)
     {
         gettingShot = true;
         imgComponent.color = colorVariable;
+        txtPlayerHealth.text = health.ToString();
     }
 
     public void UpdateBulletCount(int bullets)
@@ -37,6 +43,9 @@ public class HUDShootOut : MonoBehaviour {
     {
         txtComponent.text = bullets + "";
     }
+
+    [SerializeField]
+    private Text txtPlayerHealth;
 
     private float shotEffectDuration = 0.2f;
     private float shotEffectTimer = 0f;

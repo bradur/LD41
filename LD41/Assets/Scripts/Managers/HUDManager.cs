@@ -5,14 +5,68 @@
 using UnityEngine;
 using System.Collections;
 
-public class HUDManager : MonoBehaviour {
+public enum MenuType
+{
+    None,
+    Start,
+    Fail,
+    Success,
+    Death,
+    TheEnd
+}
 
-    void Start () {
-    
+public class HUDManager : MonoBehaviour
+{
+
+    void Start()
+    {
+
     }
 
-    void Update () {
-    
+    void Update()
+    {
+
+    }
+
+    public void SuccessMenu()
+    {
+        startMenu.SetActive(false);
+        successMenu.SetActive(true);
+        failMenu.SetActive(false);
+        deathMenu.SetActive(false);
+    }
+
+    public void FailMenu()
+    {
+        startMenu.SetActive(false);
+        successMenu.SetActive(false);
+        failMenu.SetActive(true);
+        deathMenu.SetActive(false);
+    }
+
+    public void StartMenu()
+    {
+        startMenu.SetActive(true);
+        successMenu.SetActive(false);
+        failMenu.SetActive(false);
+        deathMenu.SetActive(false);
+    }
+
+    public void DeathMenu()
+    {
+        startMenu.SetActive(false);
+        successMenu.SetActive(false);
+        failMenu.SetActive(false);
+        deathMenu.SetActive(true);
+    }
+
+    public void TheEndMenu()
+    {
+        startMenu.SetActive(false);
+        successMenu.SetActive(false);
+        failMenu.SetActive(false);
+        deathMenu.SetActive(false);
+        theEndMenu.SetActive(true);
     }
 
     public void ShowIconOnDriveHud(SpriteRenderer sr, Transform target)
@@ -23,6 +77,11 @@ public class HUDManager : MonoBehaviour {
     public void DestroyCompass()
     {
         hudCompass.DestroyIcons();
+    }
+
+    public void SetHealth(int health)
+    {
+        hudShootout.SetHealth(health);
     }
 
     [SerializeField]
@@ -37,22 +96,59 @@ public class HUDManager : MonoBehaviour {
     [SerializeField]
     private GameObject mainMenu;
 
+
+    [SerializeField]
+    private GameObject failMenu;
+
+    [SerializeField]
+    private GameObject startMenu;
+
+    [SerializeField]
+    private GameObject successMenu;
+
+    [SerializeField]
+    private GameObject deathMenu;
+
+    [SerializeField]
+    private GameObject theEndMenu;
+
     public void HideMainMenu()
     {
         mainMenu.SetActive(false);
     }
 
-    public void ShowMainMenu()
+    public void ShowMainMenu(MenuType menuType)
     {
         mainMenu.SetActive(true);
+        if (menuType == MenuType.Fail)
+        {
+            FailMenu();
+        }
+        else if (menuType == MenuType.Success)
+        {
+            SuccessMenu();
+        }
+        else if (menuType == MenuType.Start)
+        {
+            StartMenu();
+        }
+        else if (menuType == MenuType.Death)
+        {
+            DeathMenu();
+        }
+        else if (menuType == MenuType.TheEnd)
+        {
+            TheEndMenu();
+        }
     }
 
-    public void GetShot()
+    public void GetShot(int health)
     {
-        hudShootout.GetShot();
+        hudShootout.GetShot(health);
     }
 
-    public void PlayerShoot(int bulletsLeft) {
+    public void PlayerShoot(int bulletsLeft)
+    {
         hudShootout.UpdateBulletCount(bulletsLeft);
     }
 

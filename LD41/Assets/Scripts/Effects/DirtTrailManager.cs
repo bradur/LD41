@@ -40,4 +40,13 @@ public class DirtTrailManager : MonoBehaviour
         }
     }
 
+    public void ClearAllTrails()
+    {
+        for (int i = inactiveTrails.Count - 1; i >= 0; i -= 1)
+        {
+            Destroy(inactiveTrails[i].gameObject);
+        }
+        inactiveTrails.Clear();
+    }
+
 }

@@ -63,6 +63,11 @@ public class VehicleMovement : MonoBehaviour
     [SerializeField]
     private LayerMask roadMask;
 
+    public void StopMovement()
+    {
+        rb.velocity = Vector3.zero;
+    }
+ 
     private bool IsOnRoad()
     {
         return Physics.CheckCapsule(
@@ -85,8 +90,14 @@ public class VehicleMovement : MonoBehaviour
         drivingMode = false;
     }
 
-    public void EnableDriving()
+    [SerializeField]
+    private SpriteRenderer bankRobbedIcon;
+    public void EnableDriving(bool bankWasRobbed)
     {
+        if (bankWasRobbed)
+        {
+            bankRobbedIcon.enabled = true;
+        }
         drivingMode = true;
     }
 

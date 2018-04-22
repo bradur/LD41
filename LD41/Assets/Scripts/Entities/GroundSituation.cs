@@ -48,14 +48,14 @@ public class GroundSituation : MonoBehaviour
     {
         if (!spent)
         {
-            spent = true;
-            mesh.enabled = false;
             if (isEnd)
             {
                 GameManager.main.EndLevel();
             }
             else
             {
+                spent = true;
+                mesh.enabled = false;
                 this.playerCamera = playerCamera;
                 situationStarting = true;
             }

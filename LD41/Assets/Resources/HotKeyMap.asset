@@ -17,3 +17,11 @@ MonoBehaviour:
     action: 1
   - key: 323
     action: 2
+  - key: 13
+    action: 4
+  - key: 113
+    action: 6
+  - key: 27
+    action: 7
+  - key: 114
+    action: 5

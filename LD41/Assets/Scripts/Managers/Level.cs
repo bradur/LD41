@@ -18,6 +18,11 @@ public class Level : MonoBehaviour {
     private List<MiniMapIcon> minimapIcons;
 
     [SerializeField]
+    private int banksToRob = 1;
+
+    public int RequiredBanks { get { return banksToRob; } }
+
+    [SerializeField]
     private int bullets = 10;
     public int Bullets
     {
@@ -35,6 +40,7 @@ public class Level : MonoBehaviour {
     {
         GameManager.main.SetTimeLimit(timeLimit);
         GameManager.main.PlacePlayer(playerPosition);
+        GameManager.main.ShowBanks(banksToRob);
         foreach (MiniMapIcon micon in minimapIcons)
         {
             micon.Initialize();

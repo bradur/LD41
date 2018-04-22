@@ -53,6 +53,11 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private List<Level> levels;
 
+    public void ShowBanks(int banksToRob)
+    {
+        hudManager.ShowBanks(banksRobbed, banksToRob);
+    }
+
     private int hp = 5;
     public void GetShot()
     {
@@ -98,8 +103,16 @@ public class GameManager : MonoBehaviour
         SoundManager.main.PlaySound(SoundType.Car);
     }
 
+    [SerializeField]
+    private GameObject topDownCam;
+
     public void SwitchToTopDown(bool bankWasRobbed)
     {
+        if (bankWasRobbed)
+        {
+            banksRobbed += 1;
+            ShowBanks(currentLevel.RequiredBanks);
+        }
         musicManager.SwitchToState(MusicState.Driving);
         driveHUD.SetActive(true);
         vehicleMovement.EnableDriving(bankWasRobbed);
@@ -129,18 +142,28 @@ public class GameManager : MonoBehaviour
     {
         vehicleMovement.DisableDriving(true);
         hudManager.ShowMainMenu(MenuType.Fail);
+        Cursor.lockState = CursorLockMode.None;
         SoundManager.main.StopSound(SoundType.Car);
         Time.timeScale = 0f;
         Debug.Log("Timelimit!");
     }
 
+    private int banksRobbed = 0;
+
     public void EndLevel()
     {
-        Time.timeScale = 0f;
-        musicManager.PlayMenuMusic();
-        hudManager.ShowMainMenu(MenuType.Success);
-        Cursor.lockState = CursorLockMode.None;
-        SoundManager.main.StopSound(SoundType.Car);
+        if (banksRobbed >= currentLevel.RequiredBanks)
+        {
+            Time.timeScale = 0f;
+            musicManager.PlayMenuMusic();
+            hudManager.ShowMainMenu(MenuType.Success);
+            Cursor.lockState = CursorLockMode.None;
+            SoundManager.main.StopSound(SoundType.Car);
+        } else
+        {
+            hudManager.ShowMessage("You need to rob " + currentLevel.RequiredBanks + " to get to the next level!");
+        }
+
     }
 
     [SerializeField]
@@ -151,6 +174,7 @@ public class GameManager : MonoBehaviour
 
     public void LoadLevel()
     {
+
         vehicleMovement.StopMovement();
         dirtTrailManager.ClearAllTrails();
         hudManager.HideMainMenu();
@@ -163,12 +187,17 @@ public class GameManager : MonoBehaviour
         }
         currentLevel = levels[levelNumber];
         currentLevelNumber = levelNumber;
+        ShowBanks(currentLevel.RequiredBanks);
         driveHUD.SetActive(true);
         currentLevel.gameObject.SetActive(true);
         miniMap.SetActive(true);
         startingLevel = true;
         SoundManager.main.PlaySound(SoundType.Car);
         currentLevel.Initialize();
+        topDownCam.SetActive(true);
+        Vector3 newPosition = vehicleMovement.transform.position;
+        newPosition.y = topDownCam.transform.position.y;
+        topDownCam.transform.position = newPosition;
     }
 
     public void NextLevel()
@@ -223,6 +252,7 @@ public class GameManager : MonoBehaviour
         int restartedLevel = PlayerPrefs.GetInt("RestartLevel", -1);
         if (restartedLevel != -1)
         {
+            Time.timeScale = 1f;
             levelNumber = restartedLevel;
             PlayerPrefs.DeleteKey("RestartLevel");
             hudManager.HideMainMenu();

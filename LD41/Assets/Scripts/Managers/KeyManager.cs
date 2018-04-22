@@ -9,7 +9,12 @@ public enum GameAction
 {
     None,
     Brake,
-    Shoot
+    Shoot,
+    ToggleMusic,
+    OK,
+    Restart,
+    Quit,
+    OpenMenu
 }
 
 [System.Serializable]

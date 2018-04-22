@@ -50,9 +50,9 @@ public class CompassIcon : MonoBehaviour
             /*if (!targetRenderer.isVisible)
             {*/
             //imgComponent.enabled = true;
-            float dist = 30f;
+            float dist = 20f;
             Vector3 direction = (originalPosition - player.position);
-            if (direction.magnitude < dist)
+            if (direction.magnitude < dist + 10f)
             {
                 //imgComponent.enabled = false;
                 target.position = originalPosition;

@@ -4,6 +4,7 @@
 
 using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public enum MenuType
 {
@@ -28,12 +29,32 @@ public class HUDManager : MonoBehaviour
 
     }
 
+    [SerializeField]
+    private Text txtBanks;
+
+    [SerializeField]
+    private Text txtMessage;
+    [SerializeField]
+    private Animator messageAnimator;
+
+    public void ShowBanks(int banksRobbed, int banksToRob)
+    {
+        txtBanks.text = banksRobbed + " / " + banksToRob;
+    }
+
+    public void ShowMessage(string message)
+    {
+        txtMessage.text = message;
+        messageAnimator.SetTrigger("Show");
+    }
+
     public void SuccessMenu()
     {
         startMenu.SetActive(false);
         successMenu.SetActive(true);
         failMenu.SetActive(false);
         deathMenu.SetActive(false);
+        theEndMenu.SetActive(false);
     }
 
     public void FailMenu()
@@ -42,6 +63,7 @@ public class HUDManager : MonoBehaviour
         successMenu.SetActive(false);
         failMenu.SetActive(true);
         deathMenu.SetActive(false);
+        theEndMenu.SetActive(false);
     }
 
     public void StartMenu()
@@ -50,6 +72,7 @@ public class HUDManager : MonoBehaviour
         successMenu.SetActive(false);
         failMenu.SetActive(false);
         deathMenu.SetActive(false);
+        theEndMenu.SetActive(false);
     }
 
     public void DeathMenu()
@@ -58,6 +81,7 @@ public class HUDManager : MonoBehaviour
         successMenu.SetActive(false);
         failMenu.SetActive(false);
         deathMenu.SetActive(true);
+        theEndMenu.SetActive(false);
     }
 
     public void TheEndMenu()

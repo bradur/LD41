@@ -4,6 +4,7 @@
 
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Level : MonoBehaviour {
 
@@ -12,6 +13,9 @@ public class Level : MonoBehaviour {
 
     [SerializeField]
     private Transform playerPosition;
+
+    [SerializeField]
+    private List<MiniMapIcon> minimapIcons;
 
     [SerializeField]
     private int bullets = 10;
@@ -31,6 +35,10 @@ public class Level : MonoBehaviour {
     {
         GameManager.main.SetTimeLimit(timeLimit);
         GameManager.main.PlacePlayer(playerPosition);
+        foreach (MiniMapIcon micon in minimapIcons)
+        {
+            micon.Initialize();
+        }
     }
 
     void Update () {

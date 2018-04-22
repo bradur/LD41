@@ -15,6 +15,19 @@ public class HUDManager : MonoBehaviour {
     
     }
 
+    public void ShowIconOnDriveHud(SpriteRenderer sr, Transform target)
+    {
+        hudCompass.ShowIcon(sr, target);
+    }
+
+    public void DestroyCompass()
+    {
+        hudCompass.DestroyIcons();
+    }
+
+    [SerializeField]
+    private HUDCompass hudCompass;
+
     [SerializeField]
     private HUDTimeLimit hudTimeLimit;
 

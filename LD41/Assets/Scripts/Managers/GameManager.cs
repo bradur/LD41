@@ -41,6 +41,11 @@ public class GameManager : MonoBehaviour
         main = this;
     }
 
+    public Transform GetPlayerTransform()
+    {
+        return player.transform;
+    }
+
     [SerializeField]
     private MusicManager musicManager;
 
@@ -52,6 +57,10 @@ public class GameManager : MonoBehaviour
         hudManager.GetShot();
     }
 
+    public void ShowIconOnDriveHud(SpriteRenderer sr, Transform target)
+    {
+        hudManager.ShowIconOnDriveHud(sr, target);
+    }
 
     private int bullets;
     public bool PlayerShoot()
@@ -107,7 +116,6 @@ public class GameManager : MonoBehaviour
 
     public void EndLevel()
     {
-        Debug.Log("LevelEnd!");
         Time.timeScale = 0f;
         musicManager.PlayMenuMusic();
         hudManager.ShowMainMenu();
@@ -122,6 +130,7 @@ public class GameManager : MonoBehaviour
 
     public void NextLevel()
     {
+        hudManager.DestroyCompass();
         musicManager.PlayMusic(MusicState.Driving);
         hudManager.HideMainMenu();
         if (!startingLevel)

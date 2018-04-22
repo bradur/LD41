@@ -73,7 +73,6 @@ public class SimpleSmoothMouseLook : MonoBehaviour
                 RaycastHit[] simpleHits = Physics.RaycastAll(transform.position, transform.forward * maxRayLength, maxRayLength, enemyMask, QueryTriggerInteraction.Collide);
                 foreach (RaycastHit hitInfo in simpleHits)
                 {
-                    Debug.Log("Enemy!");
                     if (hitInfo.collider.gameObject.tag == "Enemy")
                     {
                         Enemy enemy = hitInfo.collider.gameObject.GetComponent<Enemy>();

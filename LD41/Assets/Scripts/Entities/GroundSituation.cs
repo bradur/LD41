@@ -32,6 +32,10 @@ public class GroundSituation : MonoBehaviour
     [SerializeField]
     private MeshRenderer mesh;
 
+    [SerializeField]
+    private bool isEnd = false;
+    public bool LevelEnd { get { return isEnd; } }
+
     void Start()
     {
 
@@ -42,9 +46,16 @@ public class GroundSituation : MonoBehaviour
         if (!spent)
         {
             spent = true;
-            situationStarting = true;
-            this.playerCamera = playerCamera;
             mesh.enabled = false;
+            if (isEnd)
+            {
+                GameManager.main.EndLevel();
+            }
+            else
+            {
+                this.playerCamera = playerCamera;
+                situationStarting = true;
+            }
         }
     }
 
@@ -59,7 +70,7 @@ public class GroundSituation : MonoBehaviour
 
     public void EndSituation()
     {
-        CameraManager.main.SwitchToTopDown();
+        GameManager.main.SwitchToTopDown();
     }
 
     void Update()

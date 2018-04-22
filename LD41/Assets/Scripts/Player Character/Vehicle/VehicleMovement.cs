@@ -77,8 +77,11 @@ public class VehicleMovement : MonoBehaviour
         );
     }
 
-    public void DisableDriving()
+    public void DisableDriving(bool stopCar)
     {
+        if (stopCar) { 
+            rb.velocity = Vector3.zero;
+        }
         drivingMode = false;
     }
 

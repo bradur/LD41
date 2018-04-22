@@ -23,10 +23,11 @@ public class Enemy : MonoBehaviour {
     {
         this.situation = situation;
         Aim();
-        transform.LookAt(
+        transform.forward = targetCamera.transform.position - transform.position;
+        /*transform.LookAt(
             transform.position + targetCamera.transform.rotation * Vector3.forward,
             targetCamera.transform.rotation * Vector3.up
-        );
+        );*/
     }
 
     public void Aim()

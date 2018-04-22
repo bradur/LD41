@@ -18,13 +18,6 @@ public class SoundManager : MonoBehaviour
 
     private bool sfxMuted = false;
 
-    [SerializeField]
-    private bool musicMuted = false;
-    public bool MusicMuted { get { return musicMuted; } }
-
-    [SerializeField]
-    private AudioSource musicSource;
-
 
     void Awake()
     {
@@ -38,10 +31,7 @@ public class SoundManager : MonoBehaviour
 
     private void Start()
     {
-        if (!musicMuted)
-        {
-            StartMusic();
-        }
+
     }
 
     public void PlaySound(SoundType soundType)
@@ -81,28 +71,6 @@ public class SoundManager : MonoBehaviour
         sfxMuted = !sfxMuted;
     }
 
-    public void StartMusic()
-    {
-        if (!musicMuted)
-        {
-            musicSource.Play();
-        }
-    }
-
-    public bool ToggleMusic()
-    {
-        musicMuted = !musicMuted;
-        if (musicMuted)
-        {
-            musicSource.Pause();
-        }
-        else
-        {
-            musicSource.Play();
-        }
-        //UIManager.main.ToggleMusic();
-        return musicMuted;
-    }
 }
 
 [System.Serializable]

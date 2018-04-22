@@ -22,9 +22,14 @@ public class VehicleCollision : MonoBehaviour {
     {
         if (collider.gameObject.tag == "GroundSituation")
         {
-            transform.rotation = collider.transform.rotation;
-            CameraManager.main.SwitchToCarSeatView();
-            collider.gameObject.GetComponent<GroundSituation>().StartSituation(carSeatCamera);
+            GroundSituation situation = collider.gameObject.GetComponent<GroundSituation>();
+            situation.StartSituation(carSeatCamera);
+            if (!situation.LevelEnd)
+            {
+                GameManager.main.SwitchToCarSeatView(!situation.LevelEnd);
+                transform.rotation = collider.transform.rotation;
+                transform.position = collider.transform.position;
+            }
         }
     }
 }

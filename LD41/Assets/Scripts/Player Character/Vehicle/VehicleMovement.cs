@@ -119,7 +119,7 @@ public class VehicleMovement : MonoBehaviour
                 moveSpeed = -(backwardMoveSpeed - brakeTime);
                 if (!onRoad)
                 {
-                    moveSpeed = backwardMoveSpeed - brakeTime;
+                    moveSpeed = backwardMoveSpeedOffroad - brakeTime;
                 }
                 if (moveSpeed > 0)
                 {

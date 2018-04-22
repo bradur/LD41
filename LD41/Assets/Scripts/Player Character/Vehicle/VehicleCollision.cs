@@ -16,14 +16,14 @@ public class VehicleCollision : MonoBehaviour {
     }
 
     [SerializeField]
-    private VehicleMovement vehicleMovement;
+    private Transform carSeatCamera;
 
     private void OnTriggerEnter(Collider collider)
     {
-        vehicleMovement.DisableDriving();
         if (collider.gameObject.tag == "GroundSituation")
         {
             CameraManager.main.SwitchToCarSeatView();
+            collider.gameObject.GetComponent<GroundSituation>().StartSituation(carSeatCamera);
         }
     }
 }

@@ -23,6 +23,13 @@ public class CameraManager : MonoBehaviour {
     [SerializeField]
     private SimpleSmoothMouseLook mouseLook;
 
+
+    [SerializeField]
+    private VehicleMovement vehicleMovement;
+
+    [SerializeField]
+    private GameObject aimHUD;
+
     [SerializeField]
     private GameObject miniMap;
 
@@ -31,16 +38,21 @@ public class CameraManager : MonoBehaviour {
 
     public void SwitchToCarSeatView()
     {
+        vehicleMovement.DisableDriving();
         carSeatCamera.Priority = mainPriority;
         topDownCamera.Priority = secondaryPriority;
-        miniMap.SetActive(true);
+        miniMap.SetActive(false);
+        aimHUD.SetActive(true);
         mouseLook.enabled = true;
     }
 
     public void SwitchToTopDown()
     {
+        vehicleMovement.EnableDriving();
         topDownCamera.Priority = mainPriority;
         carSeatCamera.Priority = secondaryPriority;
+        miniMap.SetActive(true);
+        aimHUD.SetActive(false);
         mouseLook.enabled = false;
     }
 }

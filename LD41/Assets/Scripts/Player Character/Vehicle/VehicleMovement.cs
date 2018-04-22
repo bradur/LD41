@@ -178,7 +178,7 @@ public class VehicleMovement : MonoBehaviour
             rb.AddTorque(transform.up * rotateSpeed, ForceMode.Force);
             //transform.Rotate(Vector3.up * rotateSpeed);
         }
-
+        SoundManager.main.SetCarSpeed(rb.velocity.magnitude / maxVelocityMagnitude);
     }
 
     /*private void FixedUpdate()

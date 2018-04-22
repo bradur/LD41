@@ -13,6 +13,16 @@ public class Level : MonoBehaviour {
     [SerializeField]
     private Transform playerPosition;
 
+    [SerializeField]
+    private int bullets = 10;
+    public int Bullets
+    {
+        get
+        {
+            return bullets;
+        }
+    }
+
     void Start () {
     
     }

@@ -47,6 +47,24 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private List<Level> levels;
 
+    public void GetShot()
+    {
+        hudManager.GetShot();
+    }
+
+
+    private int bullets;
+    public bool PlayerShoot()
+    {
+        if (bullets > 0)
+        {
+            bullets -= 1;
+            hudManager.PlayerShoot(bullets);
+            return true;
+        }
+        return false;
+    }
+
     public void SwitchToCarSeatView(bool stopCar)
     {
         driveHUD.SetActive(false);
@@ -54,8 +72,10 @@ public class GameManager : MonoBehaviour
         cameraManager.SwitchToCarSeatView();
         miniMap.SetActive(false);
         aimHUD.SetActive(true);
+        hudManager.SetBulletCount(bullets);
         mouseLook.enabled = true;
         musicManager.SwitchToState(MusicState.Shooting);
+        SoundManager.main.PlaySound(SoundType.Car);
     }
 
     public void SwitchToTopDown()
@@ -67,6 +87,7 @@ public class GameManager : MonoBehaviour
         miniMap.SetActive(true);
         aimHUD.SetActive(false);
         mouseLook.enabled = false;
+        SoundManager.main.PlaySound(SoundType.Car);
     }
 
     public void SetTimeLimit(int timeLimit)
@@ -90,6 +111,8 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 0f;
         musicManager.PlayMenuMusic();
         hudManager.ShowMainMenu();
+        Cursor.lockState = CursorLockMode.None;
+        SoundManager.main.StopSound(SoundType.Car);
     }
 
     [SerializeField]
@@ -107,10 +130,12 @@ public class GameManager : MonoBehaviour
             {
                 Time.timeScale = 0f;
                 currentLevel = levels[levelNumber];
+                driveHUD.SetActive(true);
                 currentLevel.gameObject.SetActive(true);
                 miniMap.SetActive(true);
                 levelNumber += 1;
                 startingLevel = true;
+                SoundManager.main.PlaySound(SoundType.Car);
                 currentLevel.Initialize();
             }
             else
@@ -128,12 +153,14 @@ public class GameManager : MonoBehaviour
     public void StartLevel()
     {
         Time.timeScale = 1f;
+        bullets = currentLevel.Bullets;
         startingLevel = false;
     }
 
     void Start()
     {
         Time.timeScale = 0f;
+        hudManager.ShowMainMenu();
     }
 
     [SerializeField]

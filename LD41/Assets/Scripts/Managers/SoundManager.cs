@@ -5,13 +5,19 @@ using System.Collections.Generic;
 
 public enum SoundType
 {
-    None
+    None,
+    EnemyShoot,
+    PlayerShoot,
+    Car
 }
 
 public class SoundManager : MonoBehaviour
 {
 
     public static SoundManager main;
+
+    [SerializeField]
+    private AudioSource carSound;
 
     [SerializeField]
     private List<GameSound> sounds = new List<GameSound>();
@@ -24,6 +30,18 @@ public class SoundManager : MonoBehaviour
         main = this;
     }
 
+    [SerializeField]
+    private float maxCarPitch = 1f;
+    [SerializeField]
+    private float minCarPitch = 0.5f;
+
+    public void SetCarSpeed(float percentage)
+    {
+        float pitchMid = maxCarPitch - minCarPitch;
+        float pitch = Mathf.Clamp(minCarPitch + pitchMid * percentage, minCarPitch, maxCarPitch);
+        carSound.pitch = pitch;
+    }
+
     private void Update()
     {
 
@@ -34,6 +52,15 @@ public class SoundManager : MonoBehaviour
 
     }
 
+    private AudioSource GetGameSound(GameSound gameSound)
+    {
+        if (gameSound.sound == null)
+        {
+            return gameSound.sounds[Random.Range(0, gameSound.sounds.Count - 1)];
+        }
+        return gameSound.sound;
+    }
+
     public void PlaySound(SoundType soundType)
     {
         if (!sfxMuted)
@@ -42,11 +69,12 @@ public class SoundManager : MonoBehaviour
             {
                 if (gameSound.soundType == soundType)
                 {
-                    if (gameSound.sound.isPlaying)
+                    AudioSource audio = GetGameSound(gameSound);
+                    if (audio.isPlaying)
                     {
-                        gameSound.sound.Stop();
+                        audio.Stop();
                     }
-                    gameSound.sound.Play();
+                    audio.Play();
                 }
             }
         }
@@ -58,9 +86,13 @@ public class SoundManager : MonoBehaviour
         {
             foreach (GameSound gameSound in sounds)
             {
-                if (gameSound.soundType == soundType && gameSound.sound.isPlaying)
+                if (gameSound.soundType == soundType)
                 {
-                    gameSound.sound.Stop();
+                    AudioSource audio = GetGameSound(gameSound);
+                    if (audio.isPlaying)
+                    {
+                        audio.Stop();
+                    }
                 }
             }
         }

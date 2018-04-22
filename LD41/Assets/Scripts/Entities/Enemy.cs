@@ -5,24 +5,42 @@
 using UnityEngine;
 using System.Collections;
 
-public class Enemy : MonoBehaviour {
+public class Enemy : MonoBehaviour
+{
 
     [SerializeField]
     private Animator animator;
     private GroundSituation situation;
 
-    void Start () {
+    void Start()
+    {
 
     }
 
-    void Update () {
-    
+    void Update()
+    {
+        if (aiming)
+        {
+            aimTimer += Time.deltaTime;
+            if (aimTimer > aimInterval)
+            {
+                Aim();
+                aimTimer = 0f;
+            }
+        }
     }
+
+    [SerializeField]
+    private float aimInterval = 3f;
+    private float aimTimer = 0f;
+
+
+    private bool aiming = false;
 
     public void Initialize(Transform targetCamera, GroundSituation situation)
     {
         this.situation = situation;
-        Aim();
+        aiming = true;
         transform.forward = targetCamera.transform.position - transform.position;
         /*transform.LookAt(
             transform.position + targetCamera.transform.rotation * Vector3.forward,
@@ -37,8 +55,8 @@ public class Enemy : MonoBehaviour {
 
     public void Shoot()
     {
-        Debug.Log("pew!");
-        Aim();
+        SoundManager.main.PlaySound(SoundType.EnemyShoot);
+        GameManager.main.GetShot();
     }
 
     public void Die()

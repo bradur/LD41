@@ -67,17 +67,24 @@ public class SimpleSmoothMouseLook : MonoBehaviour
         Debug.DrawRay(transform.position, transform.forward * maxRayLength, Color.red);
         if (KeyManager.main.GetKeyUp(GameAction.Shoot))
         {
-            
-            RaycastHit[] simpleHits = Physics.RaycastAll(transform.position, transform.forward * maxRayLength, maxRayLength, enemyMask, QueryTriggerInteraction.Collide);
-            foreach (RaycastHit hitInfo in simpleHits)
+            if (GameManager.main.PlayerShoot())
             {
-                Debug.Log("Enemy!");
-                if (hitInfo.collider.gameObject.tag == "Enemy")
+                SoundManager.main.PlaySound(SoundType.PlayerShoot);
+                RaycastHit[] simpleHits = Physics.RaycastAll(transform.position, transform.forward * maxRayLength, maxRayLength, enemyMask, QueryTriggerInteraction.Collide);
+                foreach (RaycastHit hitInfo in simpleHits)
                 {
-                    
-                    Enemy enemy = hitInfo.collider.gameObject.GetComponent<Enemy>();
-                    enemy.Die();
+                    Debug.Log("Enemy!");
+                    if (hitInfo.collider.gameObject.tag == "Enemy")
+                    {
+                        Enemy enemy = hitInfo.collider.gameObject.GetComponent<Enemy>();
+                        enemy.Die();
+                    }
                 }
+            }
+            else
+            {
+                // no ammo
+                //SoundManager.main.PlaySound(SoundType.PlayerShoot);
             }
         }
     }

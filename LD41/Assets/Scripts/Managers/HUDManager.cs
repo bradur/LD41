@@ -19,6 +19,9 @@ public class HUDManager : MonoBehaviour {
     private HUDTimeLimit hudTimeLimit;
 
     [SerializeField]
+    private HUDShootOut hudShootout;
+
+    [SerializeField]
     private GameObject mainMenu;
 
     public void HideMainMenu()
@@ -31,6 +34,19 @@ public class HUDManager : MonoBehaviour {
         mainMenu.SetActive(true);
     }
 
+    public void GetShot()
+    {
+        hudShootout.GetShot();
+    }
+
+    public void PlayerShoot(int bulletsLeft) {
+        hudShootout.UpdateBulletCount(bulletsLeft);
+    }
+
+    public void SetBulletCount(int bulletCount)
+    {
+        hudShootout.SetBulletCount(bulletCount);
+    }
 
     public void SetTimeLimit(int timeLimit)
     {

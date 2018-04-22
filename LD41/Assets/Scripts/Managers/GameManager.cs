@@ -250,6 +250,8 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
         int restartedLevel = PlayerPrefs.GetInt("RestartLevel", -1);
         if (restartedLevel != -1)
         {

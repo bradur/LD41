@@ -159,11 +159,13 @@ public class HUDManager : MonoBehaviour
 
     public void HideMainMenu()
     {
+        Cursor.visible = false;
         mainMenu.SetActive(false);
     }
 
     public void ShowMainMenu(MenuType menuType)
     {
+        Cursor.visible = true;
         mainMenu.SetActive(true);
         if (menuType == MenuType.Fail)
         {

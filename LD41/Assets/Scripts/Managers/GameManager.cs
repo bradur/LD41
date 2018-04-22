@@ -174,7 +174,9 @@ public class GameManager : MonoBehaviour
 
     public void LoadLevel()
     {
-
+        banksRobbed = 0;
+        hp = 5;
+        hudManager.SetHealth(hp);
         vehicleMovement.StopMovement();
         dirtTrailManager.ClearAllTrails();
         hudManager.HideMainMenu();
@@ -248,7 +250,6 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        hudManager.SetHealth(hp);
         int restartedLevel = PlayerPrefs.GetInt("RestartLevel", -1);
         if (restartedLevel != -1)
         {
@@ -272,6 +273,15 @@ public class GameManager : MonoBehaviour
     private float startingLevelTimer = 0f;
     private bool startingLevel = false;
 
+    public void CloseMenu()
+    {
+        Time.timeScale = 1f;
+        mayPause = true;
+        hudManager.HideMainMenu();
+    }
+
+    private bool mayPause = true;
+
     void Update()
     {
         if (startingLevel)
@@ -282,6 +292,12 @@ public class GameManager : MonoBehaviour
                 startingLevel = false;
                 StartLevel();
             }
+        }
+        if (KeyManager.main.GetKeyUp(GameAction.OpenMenu))
+        {
+            mayPause = false;
+            Time.timeScale = 0f;
+            hudManager.ShowMainMenu(MenuType.Pause);
         }
     }
 }

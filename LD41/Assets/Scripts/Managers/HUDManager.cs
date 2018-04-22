@@ -13,7 +13,8 @@ public enum MenuType
     Fail,
     Success,
     Death,
-    TheEnd
+    TheEnd,
+    Pause
 }
 
 public class HUDManager : MonoBehaviour
@@ -55,6 +56,7 @@ public class HUDManager : MonoBehaviour
         failMenu.SetActive(false);
         deathMenu.SetActive(false);
         theEndMenu.SetActive(false);
+        pauseMenu.SetActive(false);
     }
 
     public void FailMenu()
@@ -64,6 +66,7 @@ public class HUDManager : MonoBehaviour
         failMenu.SetActive(true);
         deathMenu.SetActive(false);
         theEndMenu.SetActive(false);
+        pauseMenu.SetActive(false);
     }
 
     public void StartMenu()
@@ -72,6 +75,7 @@ public class HUDManager : MonoBehaviour
         successMenu.SetActive(false);
         failMenu.SetActive(false);
         deathMenu.SetActive(false);
+        pauseMenu.SetActive(false);
         theEndMenu.SetActive(false);
     }
 
@@ -81,6 +85,7 @@ public class HUDManager : MonoBehaviour
         successMenu.SetActive(false);
         failMenu.SetActive(false);
         deathMenu.SetActive(true);
+        pauseMenu.SetActive(false);
         theEndMenu.SetActive(false);
     }
 
@@ -90,7 +95,19 @@ public class HUDManager : MonoBehaviour
         successMenu.SetActive(false);
         failMenu.SetActive(false);
         deathMenu.SetActive(false);
+        pauseMenu.SetActive(false);
         theEndMenu.SetActive(true);
+    }
+
+
+    public void PauseMenu()
+    {
+        startMenu.SetActive(false);
+        successMenu.SetActive(false);
+        failMenu.SetActive(false);
+        deathMenu.SetActive(false);
+        theEndMenu.SetActive(false);
+        pauseMenu.SetActive(true);
     }
 
     public void ShowIconOnDriveHud(SpriteRenderer sr, Transform target)
@@ -134,6 +151,10 @@ public class HUDManager : MonoBehaviour
     private GameObject deathMenu;
 
     [SerializeField]
+    private GameObject pauseMenu;
+
+
+    [SerializeField]
     private GameObject theEndMenu;
 
     public void HideMainMenu()
@@ -163,6 +184,10 @@ public class HUDManager : MonoBehaviour
         else if (menuType == MenuType.TheEnd)
         {
             TheEndMenu();
+        }
+        else if (menuType == MenuType.Pause)
+        {
+            PauseMenu();
         }
     }
 
